@@ -1,23 +1,23 @@
+"use client";
 
-"use client"
+import { useEffect } from "react";
 
-import { Modal } from "@/components/ui/modal";
+import { useStoreModal } from "@/hooks/use-store-modal";
 
 export default function SetupPage() {
+  //
+  const { onOpen, isOpen } = useStoreModal();
+
+  useEffect(() => {
+    if (!isOpen) {
+      onOpen();
+    }
+  }, [isOpen, onOpen]);
+
+  //
   return (
     <div className="p-4">
       <p>Ceci est une route protéger</p>
-      <Modal
-        title="Test title"
-        description="Description test"
-        isOpen
-        onClose={() => {}}
-      >
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis,
-        quisquam minus corporis cumque, delectus nemo a sit provident earum rem,
-        illo voluptatem doloremque dolor aperiam et magnam illum sequi
-        recusandae?
-      </Modal>
     </div>
   );
 }
