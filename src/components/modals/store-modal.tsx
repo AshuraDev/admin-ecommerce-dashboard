@@ -58,7 +58,7 @@ export const StoreModal = () => {
                 )}
               />
               <div className="pt-6 space-x-2 flex items-center justify-end w-full">
-                <Button variant={"destructive"} onClick={onClose}>
+                <Button variant={"outline"} onClick={onClose}>
                   Annuler
                 </Button>
                 <Button type="submit">Continuer</Button>
