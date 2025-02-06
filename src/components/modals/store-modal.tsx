@@ -1,5 +1,6 @@
-import React from "react";
+// import React, { useState } from "react";
 import * as z from "zod";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -8,6 +9,7 @@ import { Modal } from "@/components/ui/modal";
 import { formSchema } from "@/schema";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import toast from "react-hot-toast";
 import {
   Form,
   FormControl,
@@ -20,6 +22,7 @@ import {
 export const StoreModal = () => {
   //
   const { isOpen, onClose } = useStoreModal();
+  // const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -28,8 +31,17 @@ export const StoreModal = () => {
     },
   });
 
+  const { isSubmitting, isValid } = form.formState;
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const response = await axios.post("/api/store", values);
+      toast.success("Votre boutique à bien été créer");
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast.error("Une erreur s'est produite!");
+    }
   };
 
   //
@@ -51,17 +63,28 @@ export const StoreModal = () => {
                   <FormItem>
                     <FormLabel>Nom</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Ma Boutique" />
+                      <Input
+                        {...field}
+                        placeholder="Ma Boutique"
+                        disabled={isSubmitting}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <div className="pt-6 space-x-2 flex items-center justify-end w-full">
-                <Button variant={"outline"} onClick={onClose}>
+                <Button
+                  variant={"outline"}
+                  type="reset"
+                  onClick={onClose}
+                  disabled={isSubmitting}
+                >
                   Annuler
                 </Button>
-                <Button type="submit">Continuer</Button>
+                <Button type="submit" disabled={isSubmitting || !isValid}>
+                  Continuer
+                </Button>
               </div>
             </form>
           </Form>
