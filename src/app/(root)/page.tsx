@@ -15,9 +15,5 @@ export default function SetupPage() {
   }, [isOpen, onOpen]);
 
   //
-  return (
-    <div className="p-4">
-      <p>Ceci est une route protéger</p>
-    </div>
-  );
+  return null;
 }
