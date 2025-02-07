@@ -10,6 +10,7 @@ interface SettingsFormProps {
 }
 
 export const SettingsForm = ({ initialData }: SettingsFormProps) => {
+    console.log(initialData)
   return (
     <div className="flex items-center justify-between">
       <Heading
