@@ -11,8 +11,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams, useRouter } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
+import { useOrigin } from "@/hooks/use-orign";
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
+import { ApiAlert } from "@/components/api-alert";
 import { Separator } from "@/components/ui/separator";
 import { AlertModal } from "@/components/modals/alert-modal";
 import {
@@ -39,6 +41,7 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
   const [open, setOpen] = useState(false);
   const params = useParams();
   const routeur = useRouter();
+  const origin = useOrigin();
 
   const form = useForm<SettingsFormValues>({
     resolver: zodResolver(formSchema),
@@ -134,6 +137,12 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
           </Button>
         </form>
       </Form>
+      <Separator />
+      <ApiAlert
+        title="NEXT_PUBLIC_API_URL"
+        description={`${origin}/api/${params.storeId}`}
+        variant="public"
+      />
     </>
   );
 };

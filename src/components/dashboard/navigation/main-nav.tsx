@@ -14,6 +14,11 @@ export const MainNav = ({
   const params = useParams();
   const routes = [
     {
+      href: `/${params.storeId}`,
+      label: "Tableau de bord",
+      active: pathname === `/${params.storeId}`,
+    },
+    {
       href: `/${params.storeId}/settings`,
       label: "Paramètres",
       active: pathname === `/${params.storeId}/settings`,
