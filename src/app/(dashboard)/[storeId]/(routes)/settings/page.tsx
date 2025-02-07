@@ -1,8 +1,8 @@
 import React from "react";
-
 import { auth } from "@clerk/nextjs/server";
-import prismadb from "@/lib/prismadb";
 import { redirect } from "next/navigation";
+
+import prismadb from "@/lib/prismadb";
 import { SettingsForm } from "@/components/dashboard/settings/settings-form";
 
 interface SettingsPageProps {

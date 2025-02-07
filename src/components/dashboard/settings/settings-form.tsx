@@ -1,16 +1,20 @@
 "use client";
 
 import * as z from "zod";
+import axios from "axios";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { Trash2 } from "lucide-react";
 import { Store } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useParams, useRouter } from "next/navigation";
 
+import { Input } from "@/components/ui/input";
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Input } from "@/components/ui/input";
+import { AlertModal } from "@/components/modals/alert-modal";
 import {
   Form,
   FormControl,
@@ -31,28 +35,68 @@ const formSchema = z.object({
 type SettingsFormValues = z.infer<typeof formSchema>;
 
 export const SettingsForm = ({ initialData }: SettingsFormProps) => {
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const params = useParams();
+  const routeur = useRouter();
 
   const form = useForm<SettingsFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData,
   });
 
+  const { isSubmitting, isValid } = form.formState;
+
   const onSubmit = async (data: SettingsFormValues) => {
-    console.log(data);
+    try {
+      setLoading(false);
+      await axios.patch(`/api/stores/${params.storeId}`, data);
+      routeur.refresh();
+      toast.success("Le nom à été mis à jour");
+    } catch {
+      toast.error("Une erreur s'est produite!");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const { isSubmitting, isValid } = form.formState;
+  const onDelete = async () => {
+    try {
+      setLoading(false);
+      await axios.delete(`/api/stores/${params.storeId}`);
+      routeur.refresh();
+      routeur.push("/");
+      toast.success("Votre boutique à été supprimer");
+    } catch {
+      toast.error(
+        "Assurez-vous de supprimer d'abord toutes les catégories et tous les produits"
+      );
+    } finally {
+      setLoading(false);
+      setOpen(false);
+    }
+  };
 
   return (
     <>
+      <AlertModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        onComfirm={onDelete}
+        loading={loading}
+      />
       <div className="flex items-center justify-between">
         <Heading
           title="Paramètres"
           description="Gérer les préférences de la boutique"
         />
-        <Button variant={"destructive"} size={"icon"} onClick={() => {}}>
+        <Button
+          variant={"destructive"}
+          size={"icon"}
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
           <Trash2 className="h-4 w-4" />
         </Button>
       </div>
@@ -72,7 +116,7 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
                   <FormControl>
                     <Input
                       {...field}
-                      disabled={isSubmitting}
+                      disabled={isSubmitting || loading}
                       placeholder="Nom de la boutique"
                     />
                   </FormControl>
@@ -82,7 +126,7 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
             />
           </div>
           <Button
-            disabled={!isValid || isSubmitting}
+            disabled={!isValid || isSubmitting || loading}
             className="ml-auto"
             type="submit"
           >

@@ -9,6 +9,7 @@ interface DashboardPageProps {
 
 const DashboardPage = async ({ params }: DashboardPageProps) => {
   const { userId } = await auth();
+  const { storeId } = await params;
 
   if (!userId) {
     redirect("/sign-in");
@@ -16,7 +17,7 @@ const DashboardPage = async ({ params }: DashboardPageProps) => {
 
   const store = await prismadb.store.findFirst({
     where: {
-      id: params.storeId,
+      id: storeId,
       userId,
     },
   });
