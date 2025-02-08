@@ -16,13 +16,13 @@ export const BillboardClient = () => {
       <div className="flex items-center justify-between">
         <Heading
           title="Statistiques (0)"
-          description="Gérer les stats de votre magasin"
+          description="Gérer les stats de votre boutique"
         />
         <Button
           onClick={() => routeur.push(`/${params.storeId}/billboards/new`)}
         >
-          <Plus className="mr-2 h-4 w-4" />
-          Add New
+          <Plus className="mr-1 h-4 w-4" />
+          Nouveau
         </Button>
       </div>
       <Separator />
