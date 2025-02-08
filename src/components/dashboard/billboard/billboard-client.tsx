@@ -15,8 +15,8 @@ export const BillboardClient = () => {
     <>
       <div className="flex items-center justify-between">
         <Heading
-          title="Statistiques (0)"
-          description="Gérer les stats de votre boutique"
+          title="Bannière (0)"
+          description="Gestion des bannières de votre boutique."
         />
         <Button
           onClick={() => routeur.push(`/${params.storeId}/billboards/new`)}

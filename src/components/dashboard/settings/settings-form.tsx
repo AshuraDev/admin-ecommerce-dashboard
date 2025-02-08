@@ -91,7 +91,7 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
       <div className="flex items-center justify-between">
         <Heading
           title="Paramètres"
-          description="Gérer les préférences de la boutique"
+          description="Gestion des préférences de votre boutique."
         />
         <Button
           variant={"destructive"}

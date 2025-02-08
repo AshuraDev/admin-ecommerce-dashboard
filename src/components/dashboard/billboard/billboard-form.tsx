@@ -16,6 +16,7 @@ import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { AlertModal } from "@/components/modals/alert-modal";
+import ImageUpload from "@/components/image-upload";
 import {
   Form,
   FormControl,
@@ -44,13 +45,14 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
   const [open, setOpen] = useState(false);
   const params = useParams();
   const routeur = useRouter();
-  const origin = useOrigin();
 
-  const title = initialData ? "Edition" : "Création";
-  const description = initialData ? "Editer vos stats" : "Créer des stats";
+  const title = initialData ? "Édition" : "Création";
+  const description = initialData
+    ? "Éditer une bannière"
+    : "Créer une bannière";
   const toastMessage = initialData
-    ? "Mise à jours effectuées"
-    : "Création effectuer";
+    ? "Mise à jour de la bannière effectuée"
+    : "Création de la bannière effectuée";
   const action = initialData ? "Modifier" : "Créer";
 
   const form = useForm<BillboardForms>({
@@ -123,18 +125,38 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 w-full"
         >
+          <FormField
+            control={form.control}
+            name="imgUrl"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Image de la bannière</FormLabel>
+                <FormControl>
+                  <ImageUpload
+                    onChange={(url) => {
+                      field.onChange(url);
+                    }}
+                    onRemove={() => field.onChange("")}
+                    disabled={isSubmitting || loading}
+                    value={field.value ? [field.value] : []}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="grid grid-cols-3 gap-8">
             <FormField
               control={form.control}
               name="label"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nom</FormLabel>
+                  <FormLabel>Nom de la bannière</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       disabled={isSubmitting || loading}
-                      placeholder="Nom"
+                      placeholder="Ma bannière"
                     />
                   </FormControl>
                   <FormMessage />
