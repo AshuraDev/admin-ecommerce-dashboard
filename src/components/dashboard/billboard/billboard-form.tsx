@@ -11,7 +11,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams, useRouter } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
-import { useOrigin } from "@/hooks/use-orign";
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -30,7 +29,7 @@ const formSchema = z.object({
   label: z
     .string()
     .min(2, { message: "Le nom doit contenir au moins deux caractères" }),
-  imgUrl: z.string().min(1),
+  imgUrl: z.string().min(1,{ message: "Doit contenir une image" }),
 });
 type BillboardForms = z.infer<typeof formSchema>;
 
@@ -68,8 +67,18 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
   const onSubmit = async (data: BillboardForms) => {
     try {
       setLoading(false);
-      //   await axios.patch(`/api/stores/${params.storeId}`, data);
+
+      if (initialData) {
+        await axios.patch(
+          `/api/${params.storeId}/billboards/${params.billboardId}`,
+          data
+        );
+      } else {
+        await axios.post(`/api/${params.storeId}/billboards`, data);
+      }
+
       routeur.refresh();
+      routeur.push(`/${params.storeId}/billboards`)
       toast.success(toastMessage);
     } catch {
       toast.error("Une erreur s'est produite!");
@@ -81,13 +90,15 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
   const onDelete = async () => {
     try {
       setLoading(false);
-      //   await axios.delete(`/api/stores/${params.storeId}`);
+      await axios.delete(
+        `/api/${params.storeId}/billboards/${params.billboardId}`
+      );
       routeur.refresh();
       routeur.push("/");
-      toast.success("Votre boutique à été supprimer");
+      toast.success("La bannière à été supprimer");
     } catch {
       toast.error(
-        "Assurez-vous de supprimer d'abord toutes les catégories et tous les produits"
+        "Assurez-vous de supprimer d'abord toutes les catégories liées à cette bannière"
       );
     } finally {
       setLoading(false);

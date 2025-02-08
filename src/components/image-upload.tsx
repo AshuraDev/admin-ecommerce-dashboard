@@ -45,6 +45,7 @@ const ImageUpload = ({
           >
             <div className="z-10 absolute top-2 right-2">
               <Button
+                disabled={disabled}
                 variant={"destructive"}
                 size={"icon"}
                 type="button"
@@ -53,7 +54,14 @@ const ImageUpload = ({
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>
-            <Image fill className="object-cover" alt="image" src={url} />
+            <Image
+              // unoptimized
+              fill
+              className="object-cover"
+              alt="image"
+              src={url}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 1920px"
+            />
           </div>
         ))}
       </div>
