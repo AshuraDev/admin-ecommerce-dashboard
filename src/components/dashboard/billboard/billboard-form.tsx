@@ -29,7 +29,7 @@ const formSchema = z.object({
   label: z
     .string()
     .min(2, { message: "Le nom doit contenir au moins deux caractères" }),
-  imgUrl: z.string().min(1,{ message: "Doit contenir une image" }),
+  imgUrl: z.string().min(1, { message: "Doit contenir une image" }),
 });
 type BillboardForms = z.infer<typeof formSchema>;
 
@@ -40,8 +40,9 @@ interface BillboardFormProps {
 export const BillboardForm = ({ initialData }: BillboardFormProps) => {
   //
 
-  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const params = useParams();
   const routeur = useRouter();
 
@@ -66,7 +67,7 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
 
   const onSubmit = async (data: BillboardForms) => {
     try {
-      setLoading(false);
+      setLoading(true);
 
       if (initialData) {
         await axios.patch(
@@ -78,7 +79,7 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
       }
 
       routeur.refresh();
-      routeur.push(`/${params.storeId}/billboards`)
+      routeur.push(`/${params.storeId}/billboards`);
       toast.success(toastMessage);
     } catch {
       toast.error("Une erreur s'est produite!");
@@ -89,12 +90,12 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
 
   const onDelete = async () => {
     try {
-      setLoading(false);
+      setLoading(true);
       await axios.delete(
         `/api/${params.storeId}/billboards/${params.billboardId}`
       );
       routeur.refresh();
-      routeur.push("/");
+      routeur.push(`/${params.storeId}/billboards`);
       toast.success("La bannière à été supprimer");
     } catch {
       toast.error(

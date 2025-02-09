@@ -52,7 +52,7 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
 
   const onSubmit = async (data: SettingsFormValues) => {
     try {
-      setLoading(false);
+      setLoading(true);
       await axios.patch(`/api/stores/${params.storeId}`, data);
       routeur.refresh();
       toast.success("Le nom à été mis à jour");
@@ -65,7 +65,7 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
 
   const onDelete = async () => {
     try {
-      setLoading(false);
+      setLoading(true);
       await axios.delete(`/api/stores/${params.storeId}`);
       routeur.refresh();
       routeur.push("/");
