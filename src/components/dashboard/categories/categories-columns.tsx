@@ -13,7 +13,7 @@ export type CategoriesColumn = {
 export const columns: ColumnDef<CategoriesColumn>[] = [
   {
     accessorKey: "name",
-    header: "Name",
+    header: "Nom",
   },
   {
     accessorKey: "billboardLabel",
