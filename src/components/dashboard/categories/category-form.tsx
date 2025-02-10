@@ -5,8 +5,8 @@ import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { Trash2 } from "lucide-react";
-import { Billboard } from "@prisma/client";
 import { useForm } from "react-hook-form";
+import { Billboard, Category } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams, useRouter } from "next/navigation";
 
@@ -15,7 +15,13 @@ import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { AlertModal } from "@/components/modals/alert-modal";
-import ImageUpload from "@/components/image-upload";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Form,
   FormControl,
@@ -26,18 +32,24 @@ import {
 } from "@/components/ui/form";
 
 const formSchema = z.object({
-  label: z
+  name: z
     .string()
-    .min(2, { message: "Le nom doit contenir au moins deux caractères" }),
-  imgUrl: z.string().min(1, { message: "Doit contenir une image" }),
+    .min(1, { message: "Le nom doit contenir au moins deux caractères" }),
+  billboardId: z
+    .string()
+    .min(1, { message: "Doit contenir au moins un caractère" }),
 });
-type BillboardForms = z.infer<typeof formSchema>;
+type CategoryFormsValues = z.infer<typeof formSchema>;
 
-interface BillboardFormProps {
-  initialData: Billboard | null;
+interface CategoryFormProps {
+  initialData: Category | null;
+  billboards: Billboard[];
 }
 
-export const BillboardForm = ({ initialData }: BillboardFormProps) => {
+export const CategoryForm = ({
+  initialData,
+  billboards,
+}: CategoryFormProps) => {
   //
 
   const [open, setOpen] = useState(false);
@@ -48,38 +60,38 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
 
   const title = initialData ? "Édition" : "Création";
   const description = initialData
-    ? "Éditer une bannière"
-    : "Créer une bannière";
+    ? "Éditer une catégorie"
+    : "Créer une catégorie";
   const toastMessage = initialData
-    ? "Mise à jour de la bannière effectuée"
-    : "Création de la bannière effectuée";
+    ? "Mise à jour de la catégorie effectuée"
+    : "Création de la catégorie effectuée";
   const action = initialData ? "Modifier" : "Créer";
 
-  const form = useForm<BillboardForms>({
+  const form = useForm<CategoryFormsValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
-      label: "",
-      imgUrl: "",
+      name: "",
+      billboardId: "",
     },
   });
 
   const { isSubmitting, isValid } = form.formState;
 
-  const onSubmit = async (data: BillboardForms) => {
+  const onSubmit = async (data: CategoryFormsValues) => {
     try {
       setLoading(true);
 
       if (initialData) {
         await axios.patch(
-          `/api/${params.storeId}/billboards/${params.billboardId}`,
+          `/api/${params.storeId}/categories/${params.categoryId}`,
           data
         );
       } else {
-        await axios.post(`/api/${params.storeId}/billboards`, data);
+        await axios.post(`/api/${params.storeId}/categories`, data);
       }
 
       routeur.refresh();
-      routeur.push(`/${params.storeId}/billboards`);
+      routeur.push(`/${params.storeId}/categories`);
       toast.success(toastMessage);
     } catch {
       toast.error("Une erreur s'est produite!");
@@ -92,14 +104,14 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
     try {
       setLoading(true);
       await axios.delete(
-        `/api/${params.storeId}/billboards/${params.billboardId}`
+        `/api/${params.storeId}/categories/${params.categoryId}`
       );
       routeur.refresh();
-      routeur.push(`/${params.storeId}/billboards`);
-      toast.success("La bannière à été supprimer");
+      routeur.push(`/${params.storeId}/categories`);
+      toast.success("La Catégorie à été supprimer");
     } catch {
       toast.error(
-        "Assurez-vous de supprimer d'abord toutes les catégories liées à cette bannière"
+        "Assurez-vous de supprimer d'abord tous les produits associées à cette catégorie"
       );
     } finally {
       setLoading(false);
@@ -137,40 +149,52 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 w-full"
         >
-          <FormField
-            control={form.control}
-            name="imgUrl"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Image de la bannière</FormLabel>
-                <FormControl>
-                  <ImageUpload
-                    onChange={(url) => {
-                      field.onChange(url);
-                    }}
-                    onRemove={() => field.onChange("")}
-                    disabled={isSubmitting || loading}
-                    value={field.value ? [field.value] : []}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <div className="grid grid-cols-3 gap-8">
             <FormField
               control={form.control}
-              name="label"
+              name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nom de la bannière</FormLabel>
+                  <FormLabel>Nom de la catégorie</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       disabled={isSubmitting || loading}
-                      placeholder="Ma bannière"
+                      placeholder="Ma catégorie"
                     />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="billboardId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Choisir la bannière</FormLabel>
+                  <Select
+                    disabled={isSubmitting || loading}
+                    onOpenChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder="Choisir une bannière"
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {billboards.map((billboard) => (
+                        <SelectItem key={billboard.id} value={billboard.id}>
+                          {billboard.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

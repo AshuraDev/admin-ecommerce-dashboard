@@ -4,8 +4,8 @@ import {fr} from 'date-fns/locale'
 
 
 import prismadb from "@/lib/prismadb";
-import { BillboardClient } from "@/components/dashboard/billboard/billboard-client";
-import { BillboardColumn } from "@/components/dashboard/billboard/columns";
+import { BillboardClient } from "@/components/dashboard/billboards/billboard-client";
+import { BillboardColumn } from "@/components/dashboard/billboards/billboards-columns";
 
 const BillboardsPage = async ({ params }: { params: { storeId: string } }) => {
   const { storeId } = await params;

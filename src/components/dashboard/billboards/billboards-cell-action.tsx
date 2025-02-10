@@ -8,7 +8,7 @@ import { Copy, Edit, MoreHorizontal, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { AlertModal } from "@/components/modals/alert-modal";
-import { BillboardColumn } from "@/components/dashboard/billboard/columns";
+import { BillboardColumn } from "@/components/dashboard/billboards/billboards-columns";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -17,11 +17,11 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 
-interface CellActionProps {
+interface BillboardsCellActionProps {
   data: BillboardColumn;
 }
 
-export const CellAction = ({ data }: CellActionProps) => {
+export const BillboardsCellAction = ({ data }: BillboardsCellActionProps) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
