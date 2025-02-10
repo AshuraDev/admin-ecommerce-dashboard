@@ -36,12 +36,12 @@ export const CategoriesCellAction = ({ data }: CategoriesCellActionProps) => {
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/${params.storeId}/billboards/${data.id}`);
+      await axios.delete(`/api/${params.storeId}/categories/${data.id}`);
       routeur.refresh();
       toast.success("La bannière à été supprimer");
     } catch {
       toast.error(
-        "Assurez-vous de supprimer d'abord toutes les catégories liées à cette bannière"
+        "Assurez-vous de supprimer d'abord toutes les produits associées à cette catégorie"
       );
     } finally {
       setLoading(false);
@@ -72,7 +72,7 @@ export const CategoriesCellAction = ({ data }: CategoriesCellActionProps) => {
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() =>
-              routeur.push(`/${params.storeId}/billboards/${data.id}`)
+              routeur.push(`/${params.storeId}/categories/${data.id}`)
             }
           >
             <Edit className="w-4 h-4 mr-2" />

@@ -175,7 +175,7 @@ export const CategoryForm = ({
                   <FormLabel>Choisir la bannière</FormLabel>
                   <Select
                     disabled={isSubmitting || loading}
-                    onOpenChange={field.onChange}
+                    onValueChange={field.onChange}
                     value={field.value}
                     defaultValue={field.value}
                   >
@@ -183,7 +183,7 @@ export const CategoryForm = ({
                       <SelectTrigger>
                         <SelectValue
                           defaultValue={field.value}
-                          placeholder="Choisir une bannière"
+                          placeholder="--Ma bannière--"
                         />
                       </SelectTrigger>
                     </FormControl>
