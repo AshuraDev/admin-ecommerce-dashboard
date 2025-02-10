@@ -8,8 +8,8 @@ import { cn } from "@/lib/utils";
 
 export const MainNav = ({
   className,
-//   ...props
-}: React.HTMLAttributes<HTMLElement>) => {
+}: //   ...props
+React.HTMLAttributes<HTMLElement>) => {
   const pathname = usePathname();
   const params = useParams();
   const routes = [
@@ -22,6 +22,11 @@ export const MainNav = ({
       href: `/${params.storeId}/billboards`,
       label: "Bannières",
       active: pathname === `/${params.storeId}/billboards`,
+    },
+    {
+      href: `/${params.storeId}/categories`,
+      label: "Catégories",
+      active: pathname === `/${params.storeId}/categories`,
     },
     {
       href: `/${params.storeId}/settings`,
