@@ -51,8 +51,8 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
     ? "Éditer une bannière"
     : "Créer une bannière";
   const toastMessage = initialData
-    ? "La bannière à été modifiée"
-    : "La bannière à été créée";
+    ? "La bannière a été modifiée"
+    : "La bannière a été créée";
   const action = initialData ? "Modifier" : "Créer";
 
   const form = useForm<BillboardFormValues>({
@@ -96,7 +96,7 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
       );
       routeur.refresh();
       routeur.push(`/${params.storeId}/billboards`);
-      toast.success("La bannière à été supprimer");
+      toast.success("La bannière a été supprimée.");
     } catch {
       toast.error(
         "Assurez-vous d'abord de supprimer toutes les catégories associées à cette bannière"

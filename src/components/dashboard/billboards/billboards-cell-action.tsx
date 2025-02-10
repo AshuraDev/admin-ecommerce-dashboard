@@ -40,7 +40,7 @@ export const BillboardsCellAction = ({ data }: BillboardsCellActionProps) => {
         `/api/${params.storeId}/billboards/${data.id}`
       );
       routeur.refresh();
-      toast.success("La bannière à été supprimer");
+      toast.success("La bannière a été supprimée.");
     } catch {
       toast.error(
         "Assurez-vous d'abord de supprimer toutes les catégories liées à cette bannière"

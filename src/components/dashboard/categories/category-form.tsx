@@ -63,8 +63,8 @@ export const CategoryForm = ({
     ? "Éditer la catégorie"
     : "Créer une catégorie";
   const toastMessage = initialData
-    ? "La catégorie à été modifiée"
-    : "La catégorie à été créée";
+    ? "La catégorie a été modifiée"
+    : "La catégorie a été créée";
   const action = initialData ? "Modifier" : "Créer";
 
   const form = useForm<CategoryFormsValues>({
@@ -108,7 +108,7 @@ export const CategoryForm = ({
       );
       routeur.refresh();
       routeur.push(`/${params.storeId}/categories`);
-      toast.success("La Catégorie à été supprimer");
+      toast.success("La Catégorie a été supprimée.");
     } catch {
       toast.error(
         "Assurez-vous d'abord de supprimer tous les produits associées à cette catégorie"

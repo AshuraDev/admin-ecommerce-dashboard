@@ -38,7 +38,7 @@ export const SizeCellAction = ({ data }: SizeCellActionProps) => {
       setLoading(true);
       await axios.delete(`/api/${params.storeId}/sizes/${data.id}`);
       routeur.refresh();
-      toast.success("La taille à été supprimer");
+      toast.success("La taille a été supprimée.");
     } catch {
       toast.error(
         "Assurez-vous d'abord de supprimer tous les produits associées à cette taille"

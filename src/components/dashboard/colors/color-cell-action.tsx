@@ -38,7 +38,7 @@ export const ColorCellAction = ({ data }: ColorCellActionProps) => {
       setLoading(true);
       await axios.delete(`/api/${params.storeId}/colors/${data.id}`);
       routeur.refresh();
-      toast.success("La couleur à été supprimer");
+      toast.success("La couleur a été supprimée.");
     } catch {
       toast.error(
         "Assurez-vous d'abord de supprimer tous les produits associées à cette couleur"

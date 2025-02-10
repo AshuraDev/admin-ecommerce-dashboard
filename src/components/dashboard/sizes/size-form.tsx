@@ -52,8 +52,8 @@ export const SizeForm = ({ initialData }: SizeFormProps) => {
     ? "Éditer la taille"
     : "Ajouter une taille";
   const toastMessage = initialData
-    ? "La taille à été mise à jour"
-    : "La taille à été ajoutée";
+    ? "La taille a été mise à jour"
+    : "La taille a été ajoutée";
   const action = initialData ? "Modifier" : "Créer";
 
   const form = useForm<SizeFormsValues>({
@@ -97,7 +97,7 @@ export const SizeForm = ({ initialData }: SizeFormProps) => {
       );
       routeur.refresh();
       routeur.push(`/${params.storeId}/sizes`);
-      toast.success("La taille à été supprimer");
+      toast.success("La taille a été supprimée.");
     } catch {
       toast.error(
         "Assurez-vous de supprimer d'abord tous les produits associées à cette taille"

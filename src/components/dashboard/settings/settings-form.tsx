@@ -55,7 +55,7 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
       setLoading(true);
       await axios.patch(`/api/stores/${params.storeId}`, data);
       routeur.refresh();
-      toast.success("Le nom de la boutique à été mis à jour");
+      toast.success("Le nom de la boutique a été mis à jour");
     } catch {
       toast.error("Une erreur s'est produite!");
     } finally {
@@ -69,7 +69,7 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
       await axios.delete(`/api/stores/${params.storeId}`);
       routeur.refresh();
       routeur.push("/");
-      toast.success("La boutique à été supprimer");
+      toast.success("La boutique a été supprimée.");
     } catch {
       toast.error(
         "Assurez-vous d'abord de supprimer toutes les catégories et tous les produits"

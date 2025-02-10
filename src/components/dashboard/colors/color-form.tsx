@@ -50,8 +50,8 @@ export const ColorForm = ({ initialData }: ColorFormProps) => {
   const title = initialData ? "Édition" : "Création";
   const description = initialData ? "Éditer la couleur" : "Ajouter une couleur";
   const toastMessage = initialData
-    ? "La couleur à été mise à jour"
-    : "La couleur à été ajoutée";
+    ? "La couleur a été mise à jour"
+    : "La couleur a été ajoutée";
   const action = initialData ? "Modifier" : "Créer";
 
   const form = useForm<ColorFormValues>({
@@ -93,7 +93,7 @@ export const ColorForm = ({ initialData }: ColorFormProps) => {
       await axios.delete(`/api/${params.storeId}/colors/${params.colorId}`);
       routeur.refresh();
       routeur.push(`/${params.storeId}/colors`);
-      toast.success("La couleur à été supprimer");
+      toast.success("La couleur a été supprimée.");
     } catch {
       toast.error(
         "Assurez-vous de supprimer d'abord tous les produits associées à cette couleur"

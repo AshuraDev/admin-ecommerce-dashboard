@@ -38,7 +38,7 @@ export const CategoriesCellAction = ({ data }: CategoriesCellActionProps) => {
       setLoading(true);
       await axios.delete(`/api/${params.storeId}/categories/${data.id}`);
       routeur.refresh();
-      toast.success("La catégorie à été supprimer");
+      toast.success("La catégorie a été supprimée.");
     } catch {
       toast.error(
         "Assurez-vous d'abord de supprimer tous les produits associées à cette catégorie"
