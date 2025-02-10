@@ -49,7 +49,7 @@ export const SizeForm = ({ initialData }: SizeFormProps) => {
 
   const title = initialData ? "Édition" : "Création";
   const description = initialData
-    ? "Éditer une taille"
+    ? "Éditer la taille"
     : "Ajouter une taille";
   const toastMessage = initialData
     ? "La taille à été mise à jour"

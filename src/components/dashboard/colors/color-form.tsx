@@ -6,7 +6,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { Trash2 } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { Billboard, Category } from "@prisma/client";
+import { Color } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams, useRouter } from "next/navigation";
 
@@ -15,13 +15,6 @@ import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { AlertModal } from "@/components/modals/alert-modal";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Form,
   FormControl,
@@ -35,21 +28,17 @@ const formSchema = z.object({
   name: z
     .string()
     .min(1, { message: "Le nom doit contenir au moins deux caractères" }),
-  billboardId: z
-    .string()
-    .min(1, { message: "Doit contenir au moins un caractère" }),
+  value: z.string().min(4).regex(/^#/, {
+    message: "La valeur doit être un code hex et commencer par '#'",
+  }),
 });
-type CategoryFormsValues = z.infer<typeof formSchema>;
+type ColorFormValues = z.infer<typeof formSchema>;
 
-interface CategoryFormProps {
-  initialData: Category | null;
-  billboards: Billboard[];
+interface ColorFormProps {
+  initialData: Color | null;
 }
 
-export const CategoryForm = ({
-  initialData,
-  billboards,
-}: CategoryFormProps) => {
+export const ColorForm = ({ initialData }: ColorFormProps) => {
   //
 
   const [open, setOpen] = useState(false);
@@ -59,39 +48,37 @@ export const CategoryForm = ({
   const routeur = useRouter();
 
   const title = initialData ? "Édition" : "Création";
-  const description = initialData
-    ? "Éditer la catégorie"
-    : "Créer une catégorie";
+  const description = initialData ? "Éditer la couleur" : "Ajouter une couleur";
   const toastMessage = initialData
-    ? "La catégorie à été modifiée"
-    : "La catégorie à été créée";
+    ? "La couleur à été mise à jour"
+    : "La couleur à été ajoutée";
   const action = initialData ? "Modifier" : "Créer";
 
-  const form = useForm<CategoryFormsValues>({
+  const form = useForm<ColorFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
       name: "",
-      billboardId: "",
+      value: "",
     },
   });
 
   const { isSubmitting, isValid } = form.formState;
 
-  const onSubmit = async (data: CategoryFormsValues) => {
+  const onSubmit = async (data: ColorFormValues) => {
     try {
       setLoading(true);
 
       if (initialData) {
         await axios.patch(
-          `/api/${params.storeId}/categories/${params.categoryId}`,
+          `/api/${params.storeId}/colors/${params.colorId}`,
           data
         );
       } else {
-        await axios.post(`/api/${params.storeId}/categories`, data);
+        await axios.post(`/api/${params.storeId}/colors`, data);
       }
 
       routeur.refresh();
-      routeur.push(`/${params.storeId}/categories`);
+      routeur.push(`/${params.storeId}/colors`);
       toast.success(toastMessage);
     } catch {
       toast.error("Une erreur s'est produite!");
@@ -103,15 +90,13 @@ export const CategoryForm = ({
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(
-        `/api/${params.storeId}/categories/${params.categoryId}`
-      );
+      await axios.delete(`/api/${params.storeId}/colors/${params.colorId}`);
       routeur.refresh();
-      routeur.push(`/${params.storeId}/categories`);
-      toast.success("La Catégorie à été supprimer");
+      routeur.push(`/${params.storeId}/colors`);
+      toast.success("La couleur à été supprimer");
     } catch {
       toast.error(
-        "Assurez-vous d'abord de supprimer tous les produits associées à cette catégorie"
+        "Assurez-vous de supprimer d'abord tous les produits associées à cette couleur"
       );
     } finally {
       setLoading(false);
@@ -155,12 +140,12 @@ export const CategoryForm = ({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nom de la catégorie</FormLabel>
+                  <FormLabel>Nom de la couleur</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       disabled={isSubmitting || loading}
-                      placeholder="Ma catégorie"
+                      placeholder="ex: Rouge"
                     />
                   </FormControl>
                   <FormMessage />
@@ -169,32 +154,23 @@ export const CategoryForm = ({
             />
             <FormField
               control={form.control}
-              name="billboardId"
+              name="value"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Choisir la bannière</FormLabel>
-                  <Select
-                    disabled={isSubmitting || loading}
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue
-                          defaultValue={field.value}
-                          placeholder="--Ma bannière--"
-                        />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {billboards.map((billboard) => (
-                        <SelectItem key={billboard.id} value={billboard.id}>
-                          {billboard.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormLabel>Valeur</FormLabel>
+                  <FormControl>
+                    <div className="flex items-center gap-x-4">
+                      <Input
+                        {...field}
+                        disabled={isSubmitting || loading}
+                        placeholder="ex: Rouge"
+                      />
+                      <div
+                        className="border p-4 rounded-md"
+                        style={{ backgroundColor: field.value }}
+                      />
+                    </div>
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
