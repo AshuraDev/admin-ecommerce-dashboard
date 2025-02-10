@@ -38,10 +38,10 @@ export const SizeCellAction = ({ data }: SizeCellActionProps) => {
       setLoading(true);
       await axios.delete(`/api/${params.storeId}/sizes/${data.id}`);
       routeur.refresh();
-      toast.success("La bannière à été supprimer");
+      toast.success("La taille à été supprimer");
     } catch {
       toast.error(
-        "Assurez-vous de supprimer d'abord toutes les produits associées à cette catégorie"
+        "Assurez-vous d'abord de supprimer tous les produits associées à cette taille"
       );
     } finally {
       setLoading(false);

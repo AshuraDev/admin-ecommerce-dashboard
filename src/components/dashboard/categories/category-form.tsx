@@ -63,8 +63,8 @@ export const CategoryForm = ({
     ? "Éditer une catégorie"
     : "Créer une catégorie";
   const toastMessage = initialData
-    ? "Mise à jour de la catégorie effectuée"
-    : "Création de la catégorie effectuée";
+    ? "La catégorie à été modifiée"
+    : "La catégorie à été créée";
   const action = initialData ? "Modifier" : "Créer";
 
   const form = useForm<CategoryFormsValues>({
@@ -111,7 +111,7 @@ export const CategoryForm = ({
       toast.success("La Catégorie à été supprimer");
     } catch {
       toast.error(
-        "Assurez-vous de supprimer d'abord tous les produits associées à cette catégorie"
+        "Assurez-vous d'abord de supprimer tous les produits associées à cette catégorie"
       );
     } finally {
       setLoading(false);

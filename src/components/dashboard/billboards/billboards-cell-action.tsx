@@ -43,7 +43,7 @@ export const BillboardsCellAction = ({ data }: BillboardsCellActionProps) => {
       toast.success("La bannière à été supprimer");
     } catch {
       toast.error(
-        "Assurez-vous de supprimer d'abord toutes les catégories liées à cette bannière"
+        "Assurez-vous d'abord de supprimer toutes les catégories liées à cette bannière"
       );
     } finally {
       setLoading(false);

@@ -26,7 +26,7 @@ export const SizeClient = ({ data }: SizeClientProps) => {
       <div className="flex items-center justify-between">
         <Heading
           title={`Tailles (${data.length})`}
-          description="Gestion des différentes tailles de votre boutique."
+          description="Gestion des différentes tailles de la boutique."
         />
         <Button
           onClick={() => routeur.push(`/${params.storeId}/sizes/new`)}
