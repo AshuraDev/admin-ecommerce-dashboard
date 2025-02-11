@@ -26,23 +26,9 @@ const ImageUpload = ({
     setMounted(true);
   }, []);
 
-  
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onUpload = (result: any) => {
-    // Cas des uploads multiples
-    if (result?.event === "success") {
-      if (Array.isArray(result.info)) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        result.info.forEach((file: any) => {
-          onChange(file.secure_url);
-        });
-      } 
-      // Cas d'un upload unique
-      else if (result.info?.secure_url) {
-        onChange(result.info.secure_url);
-      }
-      
-    }
+    onChange(result.info.secure_url);
   };
 
   if (!mounted) {
@@ -86,14 +72,14 @@ const ImageUpload = ({
           multiple: true,
           maxFiles: 10,
           sources: ["local"],
-          clientAllowedFormats: ["png", "jpg", "jpeg"]
+          clientAllowedFormats: ["png", "jpg", "jpeg"],
         }}
       >
         {({ open }) => (
-          <Button 
-            type="button" 
+          <Button
+            type="button"
             disabled={disabled}
-            variant="secondary" 
+            variant="secondary"
             onClick={() => open()}
           >
             <ImagePlus className="h-4 w-4 mr-2" />
@@ -101,7 +87,6 @@ const ImageUpload = ({
           </Button>
         )}
       </CldUploadWidget>
-
     </div>
   );
 };

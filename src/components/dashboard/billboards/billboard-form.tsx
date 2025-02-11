@@ -142,7 +142,7 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
             name="imgUrl"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Image de la bannière</FormLabel>
+                <FormLabel>Choisir une image pour la bannière</FormLabel>
                 <FormControl>
                   <ImageUpload
                     onChange={(url) => {

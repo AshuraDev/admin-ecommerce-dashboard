@@ -6,7 +6,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { Trash2 } from "lucide-react";
 import { Category, Color, Product, ProductImage, Size } from "@prisma/client";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams, useRouter } from "next/navigation";
 
@@ -38,7 +38,11 @@ const formSchema = z.object({
   name: z
     .string()
     .min(1, { message: "Le nom doit contenir au moins un caractères" }),
-  images: z.object({ url: z.string() }).array(),
+  // images: z.object({ url: z.string() }).array(),
+  images: z
+    .object({ url: z.string() })
+    .array()
+    .min(1, { message: "Veuillez ajouter au moins une image" }),
   price: z.coerce
     .number()
     .min(1, { message: "Le prix doit être supérieur à 0" }),
@@ -48,6 +52,7 @@ const formSchema = z.object({
   isFeatured: z.boolean().default(false).optional(),
   isArchived: z.boolean().default(false).optional(),
 });
+
 type ProductFormValues = z.infer<typeof formSchema>;
 
 interface ProductFormProps {
@@ -77,7 +82,7 @@ export const ProductForm = ({
 
   const title = initialData ? "Édition" : "Création";
   const description = initialData
-    ? "Éditer un produit"
+    ? "Éditer le produit"
     : "Ajouter un nouveau produit";
   const toastMessage = initialData
     ? "Le produit a été modifiée"
@@ -89,7 +94,7 @@ export const ProductForm = ({
     defaultValues: initialData
       ? {
           ...initialData,
-          price: parseFloat(String(initialData?.price)),
+          price: parseInt(String(initialData?.price)),
         }
       : {
           name: "",
@@ -104,6 +109,11 @@ export const ProductForm = ({
   });
 
   const { isSubmitting, isValid } = form.formState;
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "images",
+  });
 
   const onSubmit = async (data: ProductFormValues) => {
     try {
@@ -176,23 +186,21 @@ export const ProductForm = ({
           <FormField
             control={form.control}
             name="images"
-            render={({ field }) => (
+            render={() => (
               <FormItem>
-                <FormLabel>Images du produit</FormLabel>
+                <FormLabel>Background Image</FormLabel>
                 <FormControl>
                   <ImageUpload
-                    value={field.value.map((image) => image.url)}
+                    value={fields.map((image: { id: string; url: string }) => image.url)}
                     disabled={loading}
-                    onChange={(url) => {
-                      field.onChange((prev: { url: string }[]) => [
-                        ...prev,
-                        { url },
-                      ]);
-                    }}
-                    onRemove={(url) => {
-                      field.onChange(
-                        field.value.filter((current) => current.url !== url)
+                    onChange={(url: string) => append({ url })}
+                    onRemove={(url: string) => {
+                      const index = fields.findIndex(
+                        (image: { id: string; url: string }) => image.url === url
                       );
+                      if (index !== -1) {
+                        remove(index);
+                      }
                     }}
                   />
                 </FormControl>
@@ -230,6 +238,7 @@ export const ProductForm = ({
                       disabled={isSubmitting || loading}
                       placeholder="1000"
                       type="number"
+                      step={10}
                     />
                   </FormControl>
                   <FormMessage />
@@ -340,6 +349,7 @@ export const ProductForm = ({
                   <div className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                     <FormControl>
                       <Checkbox
+                        disabled={isSubmitting || loading}
                         checked={field.value}
                         onCheckedChange={field.onChange}
                       />
@@ -362,6 +372,7 @@ export const ProductForm = ({
                   <div className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                     <FormControl>
                       <Checkbox
+                        disabled={isSubmitting || loading}
                         checked={field.value}
                         onCheckedChange={field.onChange}
                       />
