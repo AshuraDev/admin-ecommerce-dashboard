@@ -26,9 +26,23 @@ const ImageUpload = ({
     setMounted(true);
   }, []);
 
+  
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onUpload = (result: any) => {
-    onChange(result.info.secure_url);
+    // Cas des uploads multiples
+    if (result?.event === "success") {
+      if (Array.isArray(result.info)) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        result.info.forEach((file: any) => {
+          onChange(file.secure_url);
+        });
+      } 
+      // Cas d'un upload unique
+      else if (result.info?.secure_url) {
+        onChange(result.info.secure_url);
+      }
+      
+    }
   };
 
   if (!mounted) {
@@ -60,29 +74,34 @@ const ImageUpload = ({
               className="object-cover"
               alt="image"
               src={url}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 1920px"
+              // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 1920px"
             />
           </div>
         ))}
       </div>
-      <CldUploadWidget onSuccess={onUpload} uploadPreset="pgdxnbjl">
-        {({ open }) => {
-          const onClick = () => {
-            open();
-          };
-          return (
-            <Button
-              type="button"
-              disabled={disabled}
-              variant={"secondary"}
-              onClick={onClick}
-            >
-              <ImagePlus className="w-4 h-4 mr-2" />
-              Ajouter une image
-            </Button>
-          );
+      <CldUploadWidget
+        onSuccess={onUpload}
+        uploadPreset="pgdxnbjl"
+        options={{
+          multiple: true,
+          maxFiles: 10,
+          sources: ["local"],
+          clientAllowedFormats: ["png", "jpg", "jpeg"]
         }}
+      >
+        {({ open }) => (
+          <Button 
+            type="button" 
+            disabled={disabled}
+            variant="secondary" 
+            onClick={() => open()}
+          >
+            <ImagePlus className="h-4 w-4 mr-2" />
+            Ajouter des images
+          </Button>
+        )}
       </CldUploadWidget>
+
     </div>
   );
 };

@@ -39,6 +39,11 @@ React.HTMLAttributes<HTMLElement>) => {
       active: pathname === `/${params.storeId}/colors`,
     },
     {
+      href: `/${params.storeId}/products`,
+      label: "Produits",
+      active: pathname === `/${params.storeId}/products`,
+    },
+    {
       href: `/${params.storeId}/settings`,
       label: "Paramètres",
       active: pathname === `/${params.storeId}/settings`,
