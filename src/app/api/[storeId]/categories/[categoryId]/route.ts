@@ -18,6 +18,9 @@ export async function GET(
       where: {
         id: categoryId,
       },
+      include: {
+        billboard: true,
+      },
     });
 
     return NextResponse.json(category);
@@ -74,7 +77,7 @@ export async function PATCH(
     const category = await prismadb.category.update({
       where: {
         id: categoryId,
-        storeId
+        storeId,
       },
       data: {
         name,
