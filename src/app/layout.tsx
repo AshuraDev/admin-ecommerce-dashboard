@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Admin Ecommerce Dashboard",
-  description: "A dashborad for ecommerce website",
+  title: "Store-Pilot",
+  description: "A dashborad for e-commerce website",
 };
 
 export default function RootLayout({
