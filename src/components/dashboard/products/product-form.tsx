@@ -85,8 +85,8 @@ export const ProductForm = ({
     ? "Éditer le produit"
     : "Ajouter un nouveau produit";
   const toastMessage = initialData
-    ? "Le produit a été modifiée"
-    : "Le produit a été créée";
+    ? "Le produit a été modifié"
+    : "Le produit a été créé";
   const action = initialData ? "Modifier" : "Créer";
 
   const form = useForm<ProductFormValues>({
