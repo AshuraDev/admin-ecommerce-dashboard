@@ -5,6 +5,7 @@ import { MainNav } from "@/components/dashboard/navigation/main-nav";
 import { StoreSwitcher } from "@/components/dashboard/navigation/store-switcher";
 import { auth } from "@clerk/nextjs/server";
 import prismadb from "@/lib/prismadb";
+import { ModeToggle } from "@/components/theme-toggle";
 
 export const Navbar = async () => {
   const { userId, redirectToSignIn } = await auth();
@@ -16,9 +17,10 @@ export const Navbar = async () => {
   return (
     <div className="border-b">
       <div className="flex h-16 items-center px-4">
-        <StoreSwitcher items={store}/>
+        <StoreSwitcher items={store} />
         <MainNav className="mx-6" />
         <div className="ml-auto flex items-center space-x-4">
+          <ModeToggle />
           <UserButton />
         </div>
       </div>
