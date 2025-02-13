@@ -3,12 +3,12 @@ import React from "react";
 import prismadb from "@/lib/prismadb";
 import { ColorForm } from "@/components/dashboard/colors/color-form";
 
-const SizePage = async ({
-  params,
-}: {
-  params: {  colorId: string };
-}) => {
-  const {colorId } = await params;
+interface ColorPageProps {
+  params: Promise<{ colorId: string }>;
+}
+
+const ColorPage = async ({ params }: ColorPageProps) => {
+  const { colorId } = await params;
 
   const color = await prismadb.color.findUnique({
     where: {
@@ -25,4 +25,4 @@ const SizePage = async ({
   );
 };
 
-export default SizePage;
+export default ColorPage;

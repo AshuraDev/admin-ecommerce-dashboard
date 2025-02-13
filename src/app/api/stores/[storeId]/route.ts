@@ -5,7 +5,7 @@ import prismadb from "@/lib/prismadb";
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { storeId: string } }
+  { params }: { params: Promise<{ storeId: string }> }
 ) {
   try {
     const { userId } = await auth();
@@ -48,7 +48,7 @@ export async function PATCH(
 //
 export async function DELETE(
   req: Request,
-  { params }: { params: { storeId: string } }
+  { params }: { params: Promise<{ storeId: string }> }
 ) {
   try {
     const { userId } = await auth();

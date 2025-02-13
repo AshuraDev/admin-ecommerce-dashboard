@@ -6,9 +6,7 @@ import prismadb from "@/lib/prismadb";
 import { SettingsForm } from "@/components/dashboard/settings/settings-form";
 
 interface SettingsPageProps {
-  params: {
-    storeId: string;
-  };
+  params: Promise<{ storeId: string }>;
 }
 
 const SettingsPage = async ({ params }: SettingsPageProps) => {

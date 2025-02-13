@@ -10,7 +10,11 @@ import { formatPrice } from "@/lib/price-format";
 
 import { CreditCard, DollarSign, Package } from "lucide-react";
 
-const DashboardPage = async ({ params }: { params: Promise<{ storeId: string }> }) => {
+interface DashboardPageProps {
+  params: Promise<{ storeId: string }>;
+}
+
+const DashboardPage = async ({ params }: DashboardPageProps) => {
   const { storeId } = await params;
 
   const totalRevenue = await getTotalRevenue(storeId);
@@ -27,7 +31,7 @@ const DashboardPage = async ({ params }: { params: Promise<{ storeId: string }> 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
               <CardTitle className="text-sm font-medium">
-              Chiffre d&apos;affaires total
+                Chiffre d&apos;affaires total
               </CardTitle>
               <DollarSign className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
@@ -39,28 +43,20 @@ const DashboardPage = async ({ params }: { params: Promise<{ storeId: string }> 
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-sm font-medium">
-                Ventes
-              </CardTitle>
+              <CardTitle className="text-sm font-medium">Ventes</CardTitle>
               <CreditCard className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
-                +{salesCount}
-              </div>
+              <div className="text-2xl font-bold">+{salesCount}</div>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-sm font-medium">
-               Stock
-              </CardTitle>
+              <CardTitle className="text-sm font-medium">Stock</CardTitle>
               <Package className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
-                {stockCount}
-              </div>
+              <div className="text-2xl font-bold">{stockCount}</div>
             </CardContent>
           </Card>
         </div>
@@ -74,7 +70,7 @@ const DashboardPage = async ({ params }: { params: Promise<{ storeId: string }> 
         </Card>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DashboardPage
+export default DashboardPage;

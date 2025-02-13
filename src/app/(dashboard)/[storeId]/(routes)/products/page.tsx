@@ -7,7 +7,11 @@ import { formatPrice } from "@/lib/price-format";
 import { ProductClient } from "@/components/dashboard/products/product-client";
 import { ProductColumn } from "@/components/dashboard/products/products-columns";
 
-const ProductsPage = async ({ params }: { params: { storeId: string } }) => {
+interface ProductsPageProps {
+  params: Promise<{ storeId: string }>;
+}
+
+const ProductsPage = async ({ params }: ProductsPageProps) => {
   const { storeId } = await params;
   const products = await prismadb.product.findMany({
     where: {
@@ -28,7 +32,7 @@ const ProductsPage = async ({ params }: { params: { storeId: string } }) => {
     color: item.color.value,
     isFeatured: item.isFeatured,
     isArchived: item.isArchived,
-    
+
     createdAt: format(item.updatedAt, "do MMMM, yyyy", { locale: fr }),
   }));
 

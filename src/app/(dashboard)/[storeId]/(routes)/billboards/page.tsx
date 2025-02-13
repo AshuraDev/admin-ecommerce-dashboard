@@ -7,7 +7,12 @@ import prismadb from "@/lib/prismadb";
 import { BillboardClient } from "@/components/dashboard/billboards/billboard-client";
 import { BillboardColumn } from "@/components/dashboard/billboards/billboards-columns";
 
-const BillboardsPage = async ({ params }: { params: { storeId: string } }) => {
+interface BillboardsPageProps {
+  params: Promise<{ storeId: string }>;
+}
+
+
+const BillboardsPage = async ({ params }: BillboardsPageProps) => {
   const { storeId } = await params;
   const billboards = await prismadb.billboard.findMany({
     where: {
