@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -50,49 +50,50 @@ model Category {
 }
 
 model Size {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   storeId   String
-  store     Store    @relation("StoreToSize", fields: [storeId], references: [id])
+  store     Store     @relation("StoreToSize", fields: [storeId], references: [id])
   name      String
   value     String
   products  Product[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
   @@index([storeId])
 }
 
 model Color {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   storeId   String
-  store     Store    @relation("StoreToColor", fields: [storeId], references: [id])
+  store     Store     @relation("StoreToColor", fields: [storeId], references: [id])
   name      String
   value     String
   products  Product[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
   @@index([storeId])
 }
 
 model Product {
-  id String @id @default(uuid())
-  storeId String
-  store Store @relation("StoreToProduct",fields: [storeId], references: [id])
+  id         String         @id @default(uuid())
+  storeId    String
+  store      Store          @relation("StoreToProduct", fields: [storeId], references: [id])
   categoryId String
-  category Category @relation("CategoryToProduct",fields: [categoryId], references: [id])
-  name String
-  price Int
-  isFeatured Boolean @default(false)
-  isArchived Boolean @default(false)
-  sizeId String
-  size Size @relation(fields: [sizeId], references: [id])
-  colorId String
-  color Color @relation(fields: [colorId], references: [id])
-  images ProductImage[]
+  category   Category       @relation("CategoryToProduct", fields: [categoryId], references: [id])
+  name       String
+  details    String
+  price      Int
+  isFeatured Boolean        @default(false)
+  isArchived Boolean        @default(false)
+  sizeId     String
+  size       Size           @relation(fields: [sizeId], references: [id])
+  colorId    String
+  color      Color          @relation(fields: [colorId], references: [id])
+  images     ProductImage[]
   orderItems OrderItem[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
 
   @@index([storeId])
   @@index([categoryId])
@@ -101,10 +102,10 @@ model Product {
 }
 
 model ProductImage {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
   productId String
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  url String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -112,25 +113,25 @@ model ProductImage {
 }
 
 model Order {
-  id String @id @default(uuid())
-  storeId String
-  store Store @relation("StoreToOrder",fields: [storeId], references: [id])
+  id         String      @id @default(uuid())
+  storeId    String
+  store      Store       @relation("StoreToOrder", fields: [storeId], references: [id])
   orderItems OrderItem[]
-  isPaid Boolean @default(false)
-  phone String @default("")
-  address String @default("")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  isPaid     Boolean     @default(false)
+  phone      String      @default("")
+  address    String      @default("")
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 
   @@index([storeId])
 }
 
-model OrderItem{
-  id String @id @default(uuid())
-  orderId String
-  order Order @relation(fields: [orderId], references: [id])
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
   productId String
-  product Product @relation(fields: [productId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
 
   @@index([orderId])
   @@index([productId])

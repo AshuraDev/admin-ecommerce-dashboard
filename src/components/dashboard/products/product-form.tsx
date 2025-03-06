@@ -33,12 +33,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
+import { TextEditor } from "./text-editor";
 
 const formSchema = z.object({
   name: z
     .string()
     .min(1, { message: "Le nom doit contenir au moins un caractères" }),
   // images: z.object({ url: z.string() }).array(),
+  details: z.string().optional(),
   images: z
     .object({ url: z.string() })
     .array()
@@ -98,6 +100,7 @@ export const ProductForm = ({
         }
       : {
           name: "",
+          details: "",
           images: [],
           price: 0,
           categoryId: "",
@@ -191,12 +194,15 @@ export const ProductForm = ({
                 <FormLabel>Background Image</FormLabel>
                 <FormControl>
                   <ImageUpload
-                    value={fields.map((image: { id: string; url: string }) => image.url)}
+                    value={fields.map(
+                      (image: { id: string; url: string }) => image.url
+                    )}
                     disabled={loading}
                     onChange={(url: string) => append({ url })}
                     onRemove={(url: string) => {
                       const index = fields.findIndex(
-                        (image: { id: string; url: string }) => image.url === url
+                        (image: { id: string; url: string }) =>
+                          image.url === url
                       );
                       if (index !== -1) {
                         remove(index);
@@ -385,6 +391,24 @@ export const ProductForm = ({
                       </FormDescription>
                     </div>
                   </div>
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="w-full my-8">
+            <FormField
+              control={form.control}
+              name="details"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <TextEditor
+                      {...field}
+                      value={field.value || ""}
+                      isLoading={loading}
+                    />
+                  </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />

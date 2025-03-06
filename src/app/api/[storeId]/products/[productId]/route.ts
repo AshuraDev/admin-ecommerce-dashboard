@@ -49,6 +49,7 @@ export async function PATCH(
     const { storeId, productId } = await params;
     const {
       name,
+      details,
       price,
       categoryId,
       colorId,
@@ -64,6 +65,9 @@ export async function PATCH(
 
     if (!name) {
       return new NextResponse("Name is required!", { status: 400 });
+    }
+    if (!details) {
+      return new NextResponse("details is required!", { status: 400 });
     }
 
     if (!images || !images.length) {
@@ -84,7 +88,7 @@ export async function PATCH(
     }
 
     if (!productId) {
-      return new NextResponse("Billboard id  is required!", { status: 400 });
+      return new NextResponse("Product id  is required!", { status: 400 });
     }
 
     if (!storeId) {
@@ -108,6 +112,7 @@ export async function PATCH(
       },
       data: {
         name,
+        details,
         price,
         categoryId,
         colorId,
